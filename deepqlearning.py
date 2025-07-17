@@ -4,7 +4,6 @@ from torch.optim import Adam
 import random
 from collections import deque
 
-# Neural Network
 class DQN(nn.Module):
     def __init__(self, input_dim, output_dim):
         super(DQN, self).__init__()
@@ -64,12 +63,10 @@ class Agent:
         next_states = torch.FloatTensor(next_states)
         dones = torch.FloatTensor(dones)
 
-        # Q-value targets
         q_values = self.policy_net(states).gather(1, actions).squeeze()
         next_q_values = self.target_net(next_states).max(1)[0]
         targets = rewards + self.gamma * next_q_values * (1 - dones)
 
-        # Loss và cập nhật
         loss = self.criterion(q_values, targets)
         self.optimizer.zero_grad()
         loss.backward()
